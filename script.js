@@ -38,8 +38,22 @@ var alienBulletY;
  * This function is called once. Sets up the canvas, accesses HTML elements with
  * select(), and adds event listeners to those elements. Sets initial values of
  * variables by calling resetGame().
- */
+*/
 
+
+function setup() {
+  canvas = createCanvas(500, 400);
+  background(168, 42, 165);
+  gameScreen = select("#game-screen");
+  canvas.parent("game-screen");
+  shipColor = "#2a73a8";
+  shipDiameter = 80;
+  shipX = width/2 ;
+  shipY =  height - (shipDiameter/2);
+  //ellipse( shipX, shipY, shipDiameter, shipDiameter);
+  shipSpeed = 6;
+  bulletDiameter = 23;
+}
 
 /*
  * gameOver()
@@ -61,6 +75,11 @@ var alienBulletY;
  * This function animates the ship, alien, and both kinds of bullets, but only
  * if the game is running.
  */
+  function draw() {
+    background(168, 42, 165);
+    drawShip();
+    drawBullet();
+  }
 
 
 /*
@@ -68,7 +87,22 @@ var alienBulletY;
  * This function draws the player's ship. It also controls the ship's
  * x value by checking if the player is holding down the left or right keys.
  */
+ function drawShip() {
+   if(keyIsDown(LEFT_ARROW) && shipX > shipDiameter/2){
+     shipX -= shipSpeed; }
+  else if (keyIsDown(RIGHT_ARROW)&& shipX < width - shipDiameter/2){
+     shipX += shipSpeed; }
 
+
+ // this is to make ship move up and down
+//   else if (keyIsDown(UP_ARROW)){
+  //   shipY -= shipSpeed; }
+    // else if(keyIsDown(DOWN_ARROW)){
+    //   shipY += shipSpeed;
+    // }
+   fill(shipColor);
+  ellipse( shipX, shipY, shipDiameter, shipDiameter);
+ }
 
 /*
  * keyPressed()
@@ -78,7 +112,12 @@ var alienBulletY;
  * ship. Then it sets the "shipShooting" variable to "true", indicating a ship
  * bullet is currently being fired.
  */
-
+ function keyPressed() {
+   if(keyCode === 32){
+     bulletX = shipX;
+     bulletY = shipY;
+   }
+ }
 
 /*
  * drawBullet()
@@ -87,7 +126,10 @@ var alienBulletY;
  * and the player earns a point. The alien aslo becomes faster (i.e., harder
  * to hit) each time it is hit by a bullet.
  */
-
+ function drawBullet() {
+   fill("#f0f0f0")
+   ellipse(bulletX, bulletY, bulletDiameter, bulletDiameter);
+ }
 
 /*
  * drawAlien()
